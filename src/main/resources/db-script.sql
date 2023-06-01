@@ -1,0 +1,31 @@
+DROP TABLE IF EXISTS user_role;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS department;
+
+CREATE TABLE role
+(
+    id   INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(64) UNIQUE NOT NULL
+);
+
+CREATE TABLE department
+(
+    id   INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(64) UNIQUE NOT NULL
+);
+
+CREATE TABLE users
+(
+    id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email         VARCHAR(64) UNIQUE NOT NULL,
+    password      VARCHAR(64)        NOT NULL,
+    department_id INT REFERENCES department (id)
+);
+
+CREATE TABLE user_role
+(
+    user_id BIGINT REFERENCES users (id) ON DELETE CASCADE,
+    role_id INT REFERENCES role (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, role_id)
+);
